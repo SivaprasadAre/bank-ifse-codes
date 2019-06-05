@@ -1,0 +1,121 @@
+<% var title = 'Example' %>
+<% include head %>
+
+<div class="container">
+
+  <div class="jumbotron text-center">
+    <%if (uplodeBuiten) { %>
+    <%} else { %>
+    <div style="position:relative;">
+      <div class="row">
+        <div class="form-group col-xs-6">
+          <form method="GET">
+            <div class="row">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <label class="btn btn-primary">
+                    <input id="my-submit" type="submit" formaction="/template" style="display:none;">
+                    Template
+                  </label>
+                </div>
+
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="form-group col-xs-3">
+          <form method="GET">
+            <div class="input-group-btn">
+              <label class="btn btn-primary">
+                <input id="my-submit" type="submit" formaction="/newrecord" style="display:none;">
+                Record Create
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div>
+      <table class="table table-dark" style="font-size: 11px;">
+        <%if (drinks) { %>
+        <thead class="thead-dark"></thead>
+        <tr>
+          <th scope="col">Co no</th>
+          <th scope="col">IFSE</th>
+          <th scope="col">Bank Number</th>
+          <th scope="col">Branch Name</th>
+          <th scope="col">Bank Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">City</th>
+          <th scope="col">District</th>
+          <th scope="col">State</th>
+        </tr>
+        </thead>
+        <tbody>
+          <%if (!Array.isArray(drinks)) { %>
+          <tr>
+            <th scope="row"><%= 1 %></th>
+            <td><%= drinks.ifsc %> </td>
+            <td><%= drinks.bank_id %> </td>
+            <td><%= drinks.branch %> </td>
+            <td><%= drinks.bank_name %> </td>
+            <td><%= drinks.address %> </td>
+            <td><%= drinks.city %> </td>
+            <td><%= drinks.district %> </td>
+            <td><%= drinks.state %> </td>
+          </tr>
+
+          <%} else { %>
+          <% drinks.forEach(function(drink,id) { %>
+          <tr>
+            <th scope="row"><%= id+1 %></th>
+            <td><%= drink._doc.ifsc %> </td>
+            <td><%= drink.bank_id %> </td>
+            <td><%= drink.branch %> </td>
+            <td><%= drink.bank_name %> </td>
+            <td><%= drink.address %> </td>
+            <td><%= drink.city %> </td>
+            <td><%= drink.district %> </td>
+            <td><%= drink.state %> </td>
+          </tr>
+          <% }); %>
+          <% }; %>
+        </tbody>
+        <% } %>
+      </table>
+    </div>
+    <% } %>
+    <div>
+      <% if (pages > 0) { %>
+      <ul class="pagination text-center">
+        <% if (current == 1) { %>
+        <li class="disabled"><a>First</a></li>
+        <% } else { %>
+        <li><a href="/template?paging=1">First</a></li>
+        <% } %>
+        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+        <% if (i !== 1) { %>
+        <li class="disabled"><a>...</a></li>
+        <% } %>
+        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+        <% if (i == current) { %>
+        <li class="active"><a><%= i %></a></li>
+        <% } else { %>
+        <li><a href="template?paging=<%= i %>"><%= i %></a></li>
+        <% } %>
+        <% if (i == Number(current) + 4 && i < pages) { %>
+        <li class="disabled"><a>...</a></li>
+        <% } %>
+        <% } %>
+        <% if (current == pages) { %>
+        <li class="disabled"><a>Last</a></li>
+        <% } else { %>
+        <li><a href="/template?paging=<%= pages %>">Last</a></li>
+        <% } %>
+      </ul>
+      <% } %>
+    </div>
+
+  </div>
+</div>
+<% include foot %>
